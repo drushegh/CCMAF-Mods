@@ -31,11 +31,6 @@
       "description": "Save prompt drafts as named snippets and insert them again later with /snip; kept across sessions."
     },
     {
-      "name": "ccmaf-pc-care",
-      "source": "./plugins/ccmaf-pc-care",
-      "description": "Workspace type for a Windows PC: checks health, tidies up and keeps the setup as files. Changes Windows settings only after asking; journals every change (tier T2)."
-    },
-    {
       "name": "ccmaf-waiting-notifier",
       "source": "./plugins/ccmaf-waiting-notifier",
       "description": "Toast plus sound when Claude is waiting on a permission prompt or question, or finishes a long turn."
