@@ -25,13 +25,30 @@ export function formatDuration(totalSeconds: number): string {
   return `${Math.floor(m / 60)}h${String(m % 60).padStart(2, '0')}m`
 }
 
-// A toast always; plus a sound when enabled. `$.audio.play` only has a player
-// on macOS, so by default the terminal bell rings too (`$.ui.notify`).
+/** A drive-letter or UNC path: the mod is loaded on Windows. */
+export function isWindowsPath(path: string): boolean {
+  return /^([A-Za-z]:[\\/]|\\\\)/.test(path)
+}
+
+// `$.audio.play` only has a player on macOS (afplay), so on Windows the chime
+// goes through .NET's SoundPlayer. The path travels in an environment
+// variable, never in the command text.
+function playChime($: EngineInterface): Promise<unknown> {
+  if (!isWindowsPath($.plugin.root)) return $.audio.play({ asset: CHIME })
+  return $.process.run(
+    ['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', '(New-Object Media.SoundPlayer $env:CCMAF_CHIME).PlaySync()'],
+    { env: { CCMAF_CHIME: `${$.plugin.root}\\${CHIME.replace('/', '\\')}` }, timeoutMs: 10_000 },
+  )
+}
+
+// A toast always; plus a sound when enabled: the chime, the terminal bell
+// (`$.ui.notify`), or both. Neither has a player everywhere (a terminal may
+// swallow the bell), so both is the default.
 // The sound and the bell run beside the hook: next() never waits on them.
 function alertUser($: EngineInterface, text: string, cfg: Config): void {
   $.ui.toast(text, { timeoutMs: 8000 })
   if (!cfg.isSound) return
-  if (cfg.via !== 'bell') $.audio.play({ asset: CHIME }).catch(() => undefined)
+  if (cfg.via !== 'bell') playChime($).catch(() => undefined)
   if (cfg.via !== 'clip') $.ui.notify(text, { title: 'Claude Code' }).catch(() => undefined)
 }
 

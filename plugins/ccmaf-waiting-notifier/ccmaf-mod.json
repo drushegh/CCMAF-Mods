@@ -1,1 +1,1 @@
-{ "minClaudeCode": "2.1.290", "testedWith": "2.1.307", "capabilities": ["toast", "audio", "notify"] }
+{ "minClaudeCode": "2.1.290", "testedWith": "2.1.307", "capabilities": ["toast", "audio", "notify", "process"] }

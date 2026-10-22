@@ -12,11 +12,11 @@ The sound and the bell run beside the hook and never delay Claude. `thresholdSec
 
 ## Sound
 
-`$.audio.play({ asset })` only has a player on macOS (`afplay`); on Windows and Linux it plays nothing. So the sound is two channels, picked by `soundVia`:
+The sound is two channels, picked by `soundVia`:
 
-- `clip`: the bundled chime `sounds/ping.wav` (a 0.3 s two-note tone, generated, 16-bit mono PCM).
-- `bell`: `$.ui.notify`, i.e. your terminal's notification channel (terminal bell, iTerm2/kitty/ghostty banner).
-- `both` (default): both. On macOS that is a chime and a bell; set `clip` or `bell` if that is too much.
+- `clip`: the bundled chime `sounds/ping.wav` (a 0.3 s two-note tone, generated, 16-bit mono PCM). On macOS it plays through `$.audio.play` (`afplay`); on Windows through PowerShell's `System.Media.SoundPlayer`. Linux has no player, so it plays nothing there.
+- `bell`: `$.ui.notify`, i.e. your terminal's notification channel (terminal bell, iTerm2/kitty/ghostty banner). Some terminals swallow it.
+- `both` (default): both. Where both reach you that is a chime and a bell; set `clip` or `bell` if that is too much.
 
 ## Options (`userConfig`)
 

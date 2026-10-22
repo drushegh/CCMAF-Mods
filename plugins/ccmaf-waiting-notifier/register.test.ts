@@ -1,5 +1,5 @@
 import { test, expect, mock } from 'claude-code/testing'
-import { formatDuration, positiveOr } from './hooks/register.ts'
+import { formatDuration, isWindowsPath, positiveOr } from './hooks/register.ts'
 
 // Nothing sits beneath the plugin: each hook here stands for the engine and
 // records what the plugin asked of it.
@@ -9,6 +9,13 @@ const harness = (on: any, isHung = false) => {
   const seen = { toasts: [] as string[], clips: [] as string[], bells: [] as string[] }
   on('ui.toast', (_$: any, e: any) => (seen.toasts.push(e.text), { value: undefined }))
   on('audio.play', (_$: any, e: any) => (isHung ? hang() : (seen.clips.push(e.clip.asset), { value: undefined })))
+  // On Windows the chime is played through PowerShell's SoundPlayer.
+  on('process.run', (_$: any, e: any) =>
+    isHung
+      ? hang()
+      : (seen.clips.push(String(e.init?.env?.CCMAF_CHIME ?? '').replace(/\\/g, '/').replace(/^.*\/(sounds\/)/, '$1')),
+        { value: { exitCode: 0, stdout: '', stderr: '' } }),
+  )
   on('ui.notify', (_$: any, e: any) =>
     isHung ? hang() : (seen.bells.push(e.text), { value: { isSent: true, channel: 'terminal_bell' } }),
   )
@@ -155,4 +162,11 @@ test('a wait that lands while you type is silent, and still counts as notified',
   await clock.advance(10_000)
   await permission($, 'Write') // same wait: no late notification once you stop typing
   expect(seen.toasts).toEqual([])
+})
+
+test('isWindowsPath tells a Windows plugin folder from a POSIX one', () => {
+  expect(isWindowsPath('C:\\Users\\me\\.claude\\plugins\\x')).toBe(true)
+  expect(isWindowsPath('c:/Users/me')).toBe(true)
+  expect(isWindowsPath('\\\\server\\share\\x')).toBe(true)
+  expect(isWindowsPath('/home/me/.claude/plugins/x')).toBe(false)
 })

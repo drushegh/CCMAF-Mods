@@ -1,7 +1,7 @@
 {
   "name": "ccmaf-waiting-notifier",
   "author": { "name": "drushegh" },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tells you when Claude is waiting on you (permission prompt, question) or has finished a long turn: a toast plus a sound or terminal bell.",
   "userConfig": {
     "thresholdSeconds": {
@@ -19,7 +19,7 @@
     "soundVia": {
       "type": "string",
       "title": "Sound via",
-      "description": "clip: play the bundled chime (macOS only). bell: ring the terminal bell / notification channel. both: do both.",
+      "description": "clip: play the bundled chime (macOS and Windows). bell: ring the terminal bell / notification channel. both: do both.",
       "options": ["both", "clip", "bell"],
       "default": "both"
     }
