@@ -1,0 +1,8 @@
+{
+  "name": "ccmaf-tidy",
+  "version": "0.2.0",
+  "description": "Keeps the chat short: each tool call is one green or red line, and a click shows its details (output, diff, agent report) in a pane on the right, beside a prompt list that jumps back through the conversation.",
+  "author": { "name": "drushegh" },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
