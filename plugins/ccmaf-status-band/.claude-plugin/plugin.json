@@ -1,0 +1,7 @@
+{
+  "name": "ccmaf-status-band",
+  "author": { "name": "drushegh" },
+  "version": "0.1.0",
+  "description": "One compact line above the prompt: context %, tool calls against the CCMAF budget class, live turn time, git branch and dirty count.",
+  "types": "./types/index.d.ts"
+}
