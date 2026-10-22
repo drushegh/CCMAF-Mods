@@ -4,7 +4,8 @@ Reusable prompts, kept across sessions.
 
 | Command | Does |
 | --- | --- |
-| `/snip save <name>` | Saves the prompt box's current draft as `<name>` (overwrites an existing one). |
+| `/snip save <name>` | Saves the draft you were just writing (or the prompt you just sent) as `<name>`; overwrites an existing one. |
+| `/snip save <name> :: <text>` | Saves `<text>` as `<name>`. |
 | `/snip <name>` | Inserts that snippet into the prompt box at the cursor. |
 | `/snip` or `/snip list` | Lists snippets with a one-line preview. |
 | `/snip rm <name>` | Deletes a snippet. |
@@ -12,7 +13,8 @@ Reusable prompts, kept across sessions.
 ## Rules
 - Names are trimmed and case-insensitive; inner spaces fold to one. 1-40 characters of `a-z 0-9 space - _`. `save`, `rm` and `list` are reserved.
 - Up to 200 snippets of up to 10000 characters each; saving over an existing name always works.
-- An empty draft is refused with a message. Unknown names suggest near matches.
+- Typing `/snip save` replaces the draft in the box, so the mod remembers the draft as you write it: the last text in the box that was not a slash command. Deleting keys don't change it, so clearing the box (key by key, Ctrl+S stash, or select and delete) keeps the whole draft. A prompt you send counts too. The reply shows a preview of what was saved.
+- Nothing to save is refused with a message. Unknown names suggest near matches.
 - Snippets live in the mod's own `$.store` (a JSON file under the Claude Code config directory), shared by all projects.
 
 ## Notes

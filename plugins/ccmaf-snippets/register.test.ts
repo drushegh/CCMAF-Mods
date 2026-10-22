@@ -13,6 +13,13 @@ const stub = (on: any, opts: { draft?: string; isFilled?: boolean; seed?: unknow
     store.set(e.key, JSON.parse(JSON.stringify(e.value)))
     return { value: undefined }
   })
+  // The engine applies an edit to the box: the span start..end becomes inputText.
+  on('prompt.edit', (_$: any, e: any) => {
+    const text = e.text.slice(0, e.start) + e.inputText + e.text.slice(e.end)
+    return { text, cursor: e.start + e.inputText.length }
+  })
+  on('prompt.change', (_$: any, e: any) => ({ text: e.text }))
+  on('prompt.submit', (_$: any, e: any) => ({ text: e.text }))
   on('prompt.read', () => ({ value: { text: opts.draft ?? '', cursor: (opts.draft ?? '').length } }))
   on('prompt.fill', (_$: any, e: any) => {
     fills.push({ text: e.text, mode: e.mode })
@@ -56,7 +63,7 @@ test('save then insert round-trips the draft', async ($, on) => {
 test('save with an empty draft says so and stores nothing', async ($, on) => {
   const s = stub(on, { draft: '   \n' })
   await start($)
-  expect((await snip($, 'save x')).text).toMatch(/empty/)
+  expect((await snip($, 'save x')).text).toMatch(/Nothing to save/)
   expect(s.store.has('snippets')).toBe(false)
 })
 
@@ -150,4 +157,57 @@ test('names may not start with a command word', () => {
   expect(nameProblem('rm foo')).toBeDefined()
   expect(nameProblem('save me')).toBeDefined()
   expect(nameProblem('removal')).toBeUndefined()
+})
+
+// The box as a real terminal leaves it: typing the command replaced the draft.
+const type = async ($: any, from: string, inputText: string) =>
+  $.prompt.edit({ origin: { kind: 'composer' }, text: from, cursor: from.length, start: from.length, end: from.length, inputText })
+const backspace = async ($: any, from: string) =>
+  $.prompt.edit({ origin: { kind: 'composer' }, text: from, cursor: from.length, start: from.length - 1, end: from.length, inputText: '' })
+
+test('save keeps the draft typed before the command replaced it', async ($, on) => {
+  const s = stub(on, { draft: '' })
+  await start($)
+  await type($, '', 'fix the failing tests')
+  await type($, 'fix the failing tests', ' and explain the cause')
+  // Cleared key by key, then the command typed: neither is the draft.
+  let box = 'fix the failing tests and explain the cause'
+  while (box !== '') {
+    await backspace($, box)
+    box = box.slice(0, -1)
+  }
+  await type($, '', '/snip save tests')
+  expect((await snip($, 'save tests')).text).toMatch(/Saved snippet "tests": fix the failing tests and explain the cause/)
+  expect(s.store.get('snippets')).toEqual([{ name: 'tests', text: 'fix the failing tests and explain the cause' }])
+})
+
+test('save after a stash or a clear keeps the draft', async ($, on) => {
+  const s = stub(on, { draft: '' })
+  await start($)
+  await type($, '', 'review this diff')
+  await $.prompt.change({ text: '', cursor: 0, origin: { kind: 'clear' } })
+  expect((await snip($, 'save review')).text).toMatch(/Saved/)
+  expect(s.store.get('snippets')).toEqual([{ name: 'review', text: 'review this diff' }])
+})
+
+test('save right after sending a prompt keeps that prompt', async ($, on) => {
+  const s = stub(on, { draft: '' })
+  await start($)
+  await $.prompt.submit({ text: 'summarise the last commit', mode: 'prompt' })
+  await snip($, 'save sum')
+  expect(s.store.get('snippets')).toEqual([{ name: 'sum', text: 'summarise the last commit' }])
+})
+
+test('inline text wins over the remembered draft', async ($, on) => {
+  const s = stub(on, { draft: '' })
+  await start($)
+  await type($, '', 'an older draft')
+  expect((await snip($, 'save My Name :: do the thing\nwell')).text).toMatch(/Saved snippet "my name"/)
+  expect(s.store.get('snippets')).toEqual([{ name: 'my name', text: 'do the thing\nwell' }])
+  expect((await snip($, 'save empty ::')).text).toMatch(/Nothing to save/)
+})
+
+test('parseArgs: inline text after ::', () => {
+  expect(parseArgs('save a b :: x :: y')).toEqual({ verb: 'save', name: 'a b', text: 'x :: y' })
+  expect(parseArgs('save a ::')).toEqual({ verb: 'save', name: 'a', text: '' })
 })
