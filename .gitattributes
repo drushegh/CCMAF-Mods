@@ -1,0 +1,5 @@
+# Keep LF everywhere: plugin files ship byte-for-byte (kit tools are hash-pinned).
+* text=auto eol=lf
+*.wav binary
+*.png binary
+*.jpg binary
