@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "blank",
+  "name": "Blank workspace",
+  "description": "A general-purpose workspace for notes, tasks and anything else that is not code.",
+  "icon": "folder",
+  "version": "0.1.0",
+  "agents": ["claude"],
+  "safety_tier": "T1",
+  "requires_plugins": ["ccmaf-skills-core@ccmaf-skills", "ccmaf-skills-workspace@ccmaf-skills"],
+  "permissions": {
+    "allow": [],
+    "ask": ["Bash(rm *)", "Bash(del *)", "Bash(rmdir *)"],
+    "deny": []
+  },
+  "panels": ["session", "files", "fileView"],
+  "schedules": [
+    {
+      "id": "weekly-review",
+      "label": "Weekly review",
+      "cron": "0 9 * * 1",
+      "prompt": "Review the notes and inbox folders, summarise what is new since last week and list open tasks.",
+      "default_on": false
+    }
+  ],
+  "resident_allowed": false
+}

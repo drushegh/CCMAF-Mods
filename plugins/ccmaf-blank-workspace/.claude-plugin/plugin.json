@@ -1,0 +1,7 @@
+{
+  "name": "ccmaf-blank-workspace",
+  "version": "0.1.0",
+  "description": "A general-purpose workspace type: notes and tasks for anything that is not code.",
+  "author": { "name": "drushegh" },
+  "license": "MIT"
+}

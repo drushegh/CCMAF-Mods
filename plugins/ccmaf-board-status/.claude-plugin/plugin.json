@@ -1,0 +1,6 @@
+{
+  "name": "ccmaf-board-status",
+  "author": { "name": "drushegh" },
+  "version": "0.1.0",
+  "description": "Shows the CCMAF board (in progress / verify counts) in Claude Code's status line."
+}

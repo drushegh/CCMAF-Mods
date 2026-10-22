@@ -1,0 +1,49 @@
+{
+  "name": "ccmaf-mods",
+  "description": "CCMAF mods: Claude Code plugins that streamline the terminal (compact chat, prompt helpers, notifications) and workspace-type kits for the CCMAF app.",
+  "owner": {
+    "name": "drushegh"
+  },
+  "plugins": [
+    {
+      "name": "ccmaf-board-status",
+      "source": "./plugins/ccmaf-board-status",
+      "description": "Shows the CCMAF board (in progress / verify counts) in Claude Code's status line."
+    },
+    {
+      "name": "ccmaf-blank-workspace",
+      "source": "./plugins/ccmaf-blank-workspace",
+      "description": "Sample workspace type: a general-purpose blank workspace for notes and tasks."
+    },
+    {
+      "name": "ccmaf-tidy",
+      "source": "./plugins/ccmaf-tidy",
+      "description": "Keeps the chat short: one green or red line per tool call, details and a prompt list in a pane on the right."
+    },
+    {
+      "name": "ccmaf-quote-reply",
+      "source": "./plugins/ccmaf-quote-reply",
+      "description": "Quote the transcript text you selected into the prompt box as a markdown block quote with /quote."
+    },
+    {
+      "name": "ccmaf-snippets",
+      "source": "./plugins/ccmaf-snippets",
+      "description": "Save prompt drafts as named snippets and insert them again later with /snip; kept across sessions."
+    },
+    {
+      "name": "ccmaf-pc-care",
+      "source": "./plugins/ccmaf-pc-care",
+      "description": "Workspace type for a Windows PC: checks health, tidies up and keeps the setup as files. Changes Windows settings only after asking; journals every change (tier T2)."
+    },
+    {
+      "name": "ccmaf-waiting-notifier",
+      "source": "./plugins/ccmaf-waiting-notifier",
+      "description": "Toast plus sound when Claude is waiting on a permission prompt or question, or finishes a long turn."
+    },
+    {
+      "name": "ccmaf-status-band",
+      "source": "./plugins/ccmaf-status-band",
+      "description": "One-line band above the prompt: context %, tool calls vs CCMAF budget class, live turn time, git branch and dirty count."
+    }
+  ]
+}

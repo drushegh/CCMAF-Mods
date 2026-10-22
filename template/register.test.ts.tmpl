@@ -1,0 +1,12 @@
+import { test, expect } from 'claude-code/testing'
+
+test('session.start sets the status', async ($, on) => {
+  let status: string | undefined
+  on('ui.status', (_$: any, e: any) => {
+    status = e.text
+    return { value: undefined }
+  })
+  on('session.start', () => ({ cwd: '/x' }))
+  await $.session.start({ cwd: '/x', surface: 'terminal', isInteractive: true })
+  expect(status).toBe('{{NAME}} is active')
+})
