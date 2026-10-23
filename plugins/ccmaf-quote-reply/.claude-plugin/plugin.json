@@ -1,6 +1,0 @@
-{
-  "name": "ccmaf-quote-reply",
-  "author": { "name": "drushegh" },
-  "version": "0.1.0",
-  "description": "Quote the transcript text you selected into the prompt box as a markdown block quote with /quote."
-}

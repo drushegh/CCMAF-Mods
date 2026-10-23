@@ -21,16 +21,6 @@
       "description": "Keeps the chat short: one green or red line per tool call, details and a prompt list in a pane on the right."
     },
     {
-      "name": "ccmaf-quote-reply",
-      "source": "./plugins/ccmaf-quote-reply",
-      "description": "Quote the transcript text you selected into the prompt box as a markdown block quote with /quote."
-    },
-    {
-      "name": "ccmaf-snippets",
-      "source": "./plugins/ccmaf-snippets",
-      "description": "Save prompt drafts as named snippets and insert them again later with /snip; kept across sessions."
-    },
-    {
       "name": "ccmaf-waiting-notifier",
       "source": "./plugins/ccmaf-waiting-notifier",
       "description": "Toast plus sound when Claude is waiting on a permission prompt or question, or finishes a long turn."

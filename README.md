@@ -19,8 +19,6 @@ Requires Claude Code 2.1.290 or later; each plugin's `ccmaf-mod.json` names its 
 | Plugin | Kind | What it does |
 |---|---|---|
 | `ccmaf-tidy` | mod | One green/red line per tool call; details, diffs and a prompt list in a pane on the right |
-| `ccmaf-quote-reply` | mod | `/quote` puts your selected transcript text in the prompt box as a `>` quote |
-| `ccmaf-snippets` | mod | `/snip` saves and inserts reusable prompts, kept across sessions |
 | `ccmaf-waiting-notifier` | mod | Toast and sound when Claude waits on a permission prompt or a question, or finishes a long turn |
 | `ccmaf-status-band` | mod | One line above the prompt: context %, tool calls against the CCMAF budget, live turn time, git branch |
 | `ccmaf-board-status` | mod | Status line `CCMAF · N in progress · M verify` from `.claude/TASKS.md` |

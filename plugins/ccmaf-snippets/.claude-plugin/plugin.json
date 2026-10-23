@@ -1,6 +1,0 @@
-{
-  "name": "ccmaf-snippets",
-  "author": { "name": "drushegh" },
-  "version": "0.2.0",
-  "description": "Save prompt drafts as named snippets and insert them again later with /snip; kept across sessions."
-}
